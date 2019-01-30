@@ -3,19 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class StateManager : MonoBehaviour {
-	public int HP;
-	public int powder;
+    
+    private GameObject ps;
+
 	public Slider HPSlider;
 	public Slider PowderSlider;
-	// Use this for initialization
-	void Start () {
-		HP = 100;
-		powder = 600;
+    public Text HPText;
+    public Text PowderText;
+
+    void Start () {
+        ps = GameObject.Find("Player");
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		HPSlider.value = HP;
-		PowderSlider.value = powder;
-	}
+        if (ps.transform.GetChild(0) != null)
+        {
+            HPSlider.value = ps.transform.GetChild(0).GetComponent<PlayerMove>().php;
+        }
+        else
+        {
+            HPSlider.value = 0;
+        }
+        PowderSlider.value = ps.GetComponent<PlayerSystem>().money;
+        HPText.text = HPSlider.value + " / 100";
+        PowderText.text = PowderSlider.value + " / 2000";
+    }
 }

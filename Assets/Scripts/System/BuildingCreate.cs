@@ -9,6 +9,7 @@ public class BuildingCreate : MonoBehaviour {
     private GameObject creation;
 
     private BuildingManager buildingManager;
+    private PlayerSystem ps;
 
     void Start ()
     {
@@ -16,6 +17,8 @@ public class BuildingCreate : MonoBehaviour {
         //if (buildingManager == null) Debug.Log("center에서 BuildingManager를 찾는데 실패했습니다.");
 
         //buildingManager.AddBuilding(15, 11, Building.BuildingType.HOME, 2, 2);
+
+        ps = GameObject.Find("Player").GetComponent<PlayerSystem>();
     }
 	
 	void Update () {
@@ -63,6 +66,7 @@ public class BuildingCreate : MonoBehaviour {
     public void Create(float cx, float cy)
     {
         bool able = true;
+        int price = 0;
         if (num == 1)
         {
             xul = 0;
@@ -70,6 +74,7 @@ public class BuildingCreate : MonoBehaviour {
             yul = 1;
             ydl = -1;
             sz = 5;
+            price = 100;
         }
         else if (num == 2)
         {
@@ -78,6 +83,7 @@ public class BuildingCreate : MonoBehaviour {
             yul = 0;
             ydl = 0;
             sz = 5;
+            price = 100;
         }
         else if (num == 3)
         {
@@ -86,6 +92,7 @@ public class BuildingCreate : MonoBehaviour {
             yul = 0;
             ydl = 0;
             sz = 5;
+            price = 200;
         }
         else if (num == 4)
         {
@@ -94,6 +101,11 @@ public class BuildingCreate : MonoBehaviour {
             yul = 0;
             ydl = -1;
             sz = 100;
+            price = 150;
+        }
+        if (ps.money < price)
+        {
+            able = false;
         }
         for (int i = Mathf.RoundToInt(cx) + xdl; i <= Mathf.RoundToInt(cx) + xul; i++)
         {
@@ -108,6 +120,7 @@ public class BuildingCreate : MonoBehaviour {
 
         if (able == true)
         {
+            ps.money -= price;
             GameObject tmp = Instantiate(creation, new Vector3(cx, cy, sz), Quaternion.Euler(0, 0, 0));
             tmp.GetComponent<WallScr>().xul = xul;
             tmp.GetComponent<WallScr>().xdl = xdl;

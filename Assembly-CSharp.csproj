@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\Object\HomeScript.cs" />
     <Compile Include="Assets\Scripts\Object\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Object\Tiles.cs" />
+    <Compile Include="Assets\Scripts\Object\Towerupgrade.cs" />
     <Compile Include="Assets\Scripts\Object\WallScr.cs" />
     <Compile Include="Assets\Scripts\Object\Wallupgrade.cs" />
     <Compile Include="Assets\Scripts\System\BackButton.cs" />

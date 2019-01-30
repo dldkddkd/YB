@@ -11,11 +11,12 @@ public class UIManager : MonoBehaviour {
     public bool Upgrading;
     public bool slideron;
     public bool ability;
+    public bool ab1, ab2;
     public int stage;
 
     public Image Building;
     public Image Upgrade;
-    public Image AbilityPopup;
+    public Image AbilityPopup, Ab1passive, Ab2passive;
     private GameObject uptmp;
     private int uptype, price, sel;
 
@@ -33,6 +34,8 @@ public class UIManager : MonoBehaviour {
         dragging = false;
         slideron = true;
         ability = false;
+        ab1 = false;
+        ab2 = false;
         stage = 1;  //0=스테이지 넘버 출력, 1=대기, 2=게임시작 출력 3=게임중
 
         ct = GameObject.Find("Creator");
@@ -104,6 +107,23 @@ public class UIManager : MonoBehaviour {
             {
                 StageUI.transform.GetChild(0).gameObject.SetActive(false);
                 StageUI.transform.GetChild(1).gameObject.SetActive(false);
+            }
+
+            if (ab1 == true)
+            {
+                Ab1passive.gameObject.SetActive(true);
+            }
+            else
+            {
+                Ab1passive.gameObject.SetActive(false);
+            }
+            if (ab2 == true)
+            {
+                Ab2passive.gameObject.SetActive(true);
+            }
+            else
+            {
+                Ab2passive.gameObject.SetActive(false);
             }
         }
         else
@@ -190,6 +210,10 @@ public class UIManager : MonoBehaviour {
         //stageScr->End
         stage = 0;
         StageUI.transform.GetChild(1).gameObject.GetComponent<Text>().text = "Stage " + num;
+        ab1 = false;
+        ab2 = false;
+        ps.GetComponent<PlayerSystem>().ab1 = false;
+        ps.GetComponent<PlayerSystem>().ab2 = false;
         StartCoroutine(StageTxt());
     }
     IEnumerator StageTxt()

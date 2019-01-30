@@ -6,7 +6,7 @@ public class Towerupgrade : MonoBehaviour {
 
     public int xul, xdl, yul, ydl;
     private int level;
-    public int thp, atk;
+    public int thp, maxthp, atk;
     private bool click;
     private int upcost, selcost;
     public Sprite lv1spr, lv2spr, lv3spr;
@@ -22,6 +22,7 @@ public class Towerupgrade : MonoBehaviour {
 
         level = 1;
         thp = 1000;
+        maxthp = 1000;
         atk = 30;
         click = false;
         upcost = 180;
@@ -44,12 +45,14 @@ public class Towerupgrade : MonoBehaviour {
             {
                 GetComponent<SpriteRenderer>().sprite = lv2spr;
                 thp = 1300;
+                maxthp = 1300;
                 atk += 20;
             }
             else if (level == 3)
             {
                 GetComponent<SpriteRenderer>().sprite = lv3spr;
                 thp = 1500;
+                maxthp = 1500;
                 atk += 20;
             }
         }
@@ -80,6 +83,22 @@ public class Towerupgrade : MonoBehaviour {
         else
         {
             click = false;
+        }
+    }
+
+    IEnumerator SelfHeal()
+    {
+        while (true)
+        {
+            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == false)
+            {
+                yield break;
+            }
+            if (thp < maxthp)
+            {
+                thp += 1;
+            }
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }

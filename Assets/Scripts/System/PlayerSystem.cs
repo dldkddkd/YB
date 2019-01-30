@@ -6,23 +6,26 @@ public class PlayerSystem : MonoBehaviour {
 
     private GameObject fairy;
     private GameObject scv;
+    public bool ab1, ab2;
     public int money, maxphp, atk;
 
 	void Start () {
         fairy = Resources.Load("Fairy") as GameObject;
         scv = Instantiate(fairy, new Vector3(2, 0, 0), Quaternion.Euler(0, 0, 0));
         scv.transform.SetParent(gameObject.transform);
+        ab1 = false;
+        ab2 = false;
         money = 600;
         maxphp = 100;
-        atk = 1;
+        atk = 10;
         scv.GetComponent<PlayerMove>().maxphp = maxphp;
         scv.GetComponent<PlayerMove>().php = maxphp;
         scv.GetComponent<PlayerMove>().atk = atk;
     }
 	
-	void Update () {
-		
-	}
+	void Update ()
+    {
+    }
 
     IEnumerator Death()
     {
@@ -39,11 +42,21 @@ public class PlayerSystem : MonoBehaviour {
 
     public void Ability1Up()
     {
-        //stage...
+        if (money >= 300 && ab1 == false)
+        {
+            money -= 300;
+            ab1 = true;
+            GameObject.Find("UIs").GetComponent<UIManager>().ab1 = true;
+        }
     }
     public void Ability2Up()
     {
-
+        if (money >= 200 && ab2 == false)
+        {
+            money -= 200;
+            ab2 = true;
+            GameObject.Find("UIs").GetComponent<UIManager>().ab2 = true;
+        }
     }
     public void Ability3Up()
     {

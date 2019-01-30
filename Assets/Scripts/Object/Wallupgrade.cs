@@ -6,7 +6,7 @@ public class Wallupgrade : MonoBehaviour {
 
     public int xul, xdl, yul, ydl;
     private int level;
-    public int whp;
+    public int whp, maxwhp;
     private bool click;
     private int upcost, selcost;
     public Sprite lv1spr, lv2spr, lv3spr;
@@ -22,6 +22,7 @@ public class Wallupgrade : MonoBehaviour {
 
         level = 1;
         whp = 500;
+        maxwhp = 500;
         click = false;
         upcost = 80;
         selcost = 20;
@@ -42,11 +43,13 @@ public class Wallupgrade : MonoBehaviour {
             {
                 GetComponent<SpriteRenderer>().sprite = lv2spr;
                 whp = 1000;
+                maxwhp = 1000;
             }
             else if (level == 3)
             {
                 GetComponent<SpriteRenderer>().sprite = lv3spr;
                 whp = 1500;
+                maxwhp = 1500;
             }
         }
     }
@@ -76,6 +79,22 @@ public class Wallupgrade : MonoBehaviour {
         else
         {
             click = false;
+        }
+    }
+
+    IEnumerator SelfHeal()
+    {
+        while (true)
+        {
+            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == false)
+            {
+                yield break;
+            }
+            if (whp < maxwhp)
+            {
+                whp += 1;
+            }
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }

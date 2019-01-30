@@ -10,6 +10,7 @@ public class StateManager : MonoBehaviour {
 	public Slider PowderSlider;
     public Text HPText;
     public Text PowderText;
+    public Text AtkText;
 
     void Start () {
         ps = GameObject.Find("Player");
@@ -28,5 +29,6 @@ public class StateManager : MonoBehaviour {
         HPSlider.maxValue = ps.GetComponent<PlayerSystem>().maxphp;
         HPText.text = HPSlider.value + " / " + HPSlider.maxValue;
         PowderText.text = PowderSlider.value + " / 2000";
+        AtkText.text = "Atk: " + ps.GetComponent<PlayerSystem>().atk;
     }
 }

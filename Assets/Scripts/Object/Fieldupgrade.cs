@@ -6,7 +6,7 @@ public class Fieldupgrade : MonoBehaviour {
 
     public int xul, xdl, yul, ydl;
     private int level;
-    public int fhp, bonus;
+    public int fhp, maxfhp, bonus;
     private bool click;
     private int upcost, selcost;
     public Sprite lv1spr, lv2spr, lv3spr;
@@ -22,6 +22,7 @@ public class Fieldupgrade : MonoBehaviour {
 
         level = 1;
         fhp = 100;
+        maxfhp = 100;
         bonus = 100;
         click = false;
         upcost = 125;
@@ -45,12 +46,14 @@ public class Fieldupgrade : MonoBehaviour {
             {
                 GetComponent<SpriteRenderer>().sprite = lv2spr;
                 fhp = 200;
+                maxfhp = 200;
                 bonus += 200;
             }
             else if (level == 3)
             {
                 GetComponent<SpriteRenderer>().sprite = lv3spr;
                 fhp = 300;
+                maxfhp = 300;
                 bonus += 200;
             }
         }
@@ -81,6 +84,22 @@ public class Fieldupgrade : MonoBehaviour {
         else
         {
             click = false;
+        }
+    }
+
+    IEnumerator SelfHeal()
+    {
+        while (true)
+        {
+            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == false)
+            {
+                yield break;
+            }
+            if (fhp < maxfhp)
+            {
+                fhp += 1;
+            }
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }

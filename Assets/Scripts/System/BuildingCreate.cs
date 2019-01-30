@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class BuildingCreate : MonoBehaviour {
 
-    private int num, xul, xdl, yul, ydl, sz;
+    private int num, xul, xdl, yul, ydl;
     public Sprite b1, b2, b3, b4;
     private GameObject creation;
 
-    private BuildingManager buildingManager;
-
-    void Start ()
+	void Start ()
     {
-        //buildingManager = GameObject.Find("center").GetComponent<BuildingManager>();
-        //if (buildingManager == null) Debug.Log("center에서 BuildingManager를 찾는데 실패했습니다.");
-
-        //buildingManager.AddBuilding(15, 11, Building.BuildingType.HOME, 2, 2);
     }
 	
 	void Update () {
@@ -69,7 +63,6 @@ public class BuildingCreate : MonoBehaviour {
             xdl = 0;
             yul = 1;
             ydl = -1;
-            sz = 5;
         }
         else if (num == 2)
         {
@@ -77,23 +70,13 @@ public class BuildingCreate : MonoBehaviour {
             xdl = -1;
             yul = 0;
             ydl = 0;
-            sz = 5;
         }
-        else if (num == 3)
+        else if (num == 3 || num == 4)
         {
             xul = 0;
             xdl = 0;
             yul = 0;
             ydl = 0;
-            sz = 5;
-        }
-        else if (num == 4)
-        {
-            xul = 1;
-            xdl = 0;
-            yul = 0;
-            ydl = -1;
-            sz = 100;
         }
         for (int i = Mathf.RoundToInt(cx) + xdl; i <= Mathf.RoundToInt(cx) + xul; i++)
         {
@@ -108,20 +91,11 @@ public class BuildingCreate : MonoBehaviour {
 
         if (able == true)
         {
-            GameObject tmp = Instantiate(creation, new Vector3(cx, cy, sz), Quaternion.Euler(0, 0, 0));
+            GameObject tmp = Instantiate(creation, new Vector3(cx, cy, 5), Quaternion.Euler(0, 0, 0));
             tmp.GetComponent<WallScr>().xul = xul;
             tmp.GetComponent<WallScr>().xdl = xdl;
             tmp.GetComponent<WallScr>().yul = yul;
             tmp.GetComponent<WallScr>().ydl = ydl;
-
-            //Building.BuildingType targetBuildingType = Building.BuildingType.NONE;
-            //if (num == 2) targetBuildingType = Building.BuildingType.WIDTHWALL;
-            //else if (num == 3) targetBuildingType = Building.BuildingType.HEIGHTWALL;
-            //else if (num == 4) targetBuildingType = Building.BuildingType.TOWER;
-            //else if (num == 0) targetBuildingType = Building.BuildingType.NONE;
-            //else if (num == 1) targetBuildingType = Building.BuildingType.HOME;
-
-            //buildingManager.AddBuilding(Mathf.RoundToInt(cx) - xdl, Mathf.RoundToInt(cy) - ydl, targetBuildingType, xul - xdl + 1, yul - ydl + 1);
             Off();
         }
     }

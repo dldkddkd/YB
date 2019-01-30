@@ -7,7 +7,7 @@ public class WallScr : MonoBehaviour {
     public int xul, xdl, yul, ydl;
     private int xpos, ypos;
 
-    void Start () {
+	void Start () {
         transform.position += new Vector3(0, 0, transform.position.y);
 
         xpos = Mathf.RoundToInt(transform.position.x) + 15;
@@ -27,5 +27,6 @@ public class WallScr : MonoBehaviour {
     }
 	
 	void Update () {
+		
 	}
 }

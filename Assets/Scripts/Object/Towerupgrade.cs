@@ -9,9 +9,18 @@ public class Towerupgrade : MonoBehaviour {
     public int thp, maxthp, atk;
     private bool click;
     private int upcost, selcost;
+    private float atkRange, atkSpeed;   // 사정거리, 공격속도
+    private float atkRegister = 0;          // 공격쿨타임용 레지스터
+    private float bulletSpeed;
     public Sprite lv1spr, lv2spr, lv3spr;
 
     private UIManager UIM;
+    private Animator animator;
+    private MonsterManager mobManager;
+
+    public GameObject Bullet1;
+    public GameObject Bullet2;
+    public GameObject Bullet3;
 
     void Start()
     {
@@ -27,13 +36,27 @@ public class Towerupgrade : MonoBehaviour {
         click = false;
         upcost = 180;
         selcost = 40;
+        atkRange = 3;
+        atkSpeed = 1;
+        bulletSpeed = 1;
         GetComponent<SpriteRenderer>().sprite = lv1spr;
 
         UIM = GameObject.Find("UIs").GetComponent<UIManager>();
+        animator = transform.GetComponent<Animator>();
+        mobManager = GameObject.Find("center").GetComponent<MonsterManager>();
     }
 
     void Update()
     {
+        if (mobManager.IsEmptyMonsterList() == false)
+        {
+            Vector3 aim = mobManager.GetCloseMonsterPosition(this.transform.position);
+            if (((Vector2)transform.position - (Vector2)aim).magnitude < atkRange)
+            {
+                attack(aim);
+            }
+        }
+        atkRegister -= atkSpeed;
     }
 
     public void Upgrade()
@@ -47,6 +70,8 @@ public class Towerupgrade : MonoBehaviour {
                 thp = 1300;
                 maxthp = 1300;
                 atk += 20;
+                bulletSpeed = 1.1f;
+                animator.SetTrigger("levUpTo2");
             }
             else if (level == 3)
             {
@@ -54,6 +79,8 @@ public class Towerupgrade : MonoBehaviour {
                 thp = 1500;
                 maxthp = 1500;
                 atk += 20;
+                bulletSpeed = 1.3f;
+                animator.SetTrigger("levUpTo3");
             }
         }
     }
@@ -67,9 +94,11 @@ public class Towerupgrade : MonoBehaviour {
             }
         }
         GameObject.Find("Player").GetComponent<PlayerSystem>().money += selcost;
+
         BuildingManager buildingManager;
         buildingManager = GameObject.Find("center").GetComponent<BuildingManager>();
         buildingManager.RemoveElementOfListToGameObject(gameObject);
+
         Destroy(gameObject);
     }
 
@@ -86,6 +115,41 @@ public class Towerupgrade : MonoBehaviour {
         }
     }
 
+    public void attack(Vector3 aim)
+    {
+        if (atkRegister > 0) return;
+
+        GameObject bulletObj = null;
+        if (this.level == 1) bulletObj = Instantiate(Bullet1, gameObject.transform.position, Quaternion.identity);
+        else if (this.level == 2) bulletObj = Instantiate(Bullet2, gameObject.transform.position, Quaternion.identity);
+        else if (this.level == 3) bulletObj = Instantiate(Bullet3, gameObject.transform.position, Quaternion.identity);
+
+        BulletInfo bulletInfo = null;
+        bulletInfo = bulletObj.GetComponent<BulletInfo>();
+
+        bulletInfo.arrow = (Vector3)((Vector2)aim - (Vector2)this.transform.position).normalized;
+        bulletInfo.ad = this.atk;
+        bulletInfo.range = this.atkRange;
+        bulletInfo.speed = this.bulletSpeed;
+
+        if (this.level == 1)
+        {
+            bulletInfo.splash = 0.1;
+            bulletInfo.penetration = 1;
+        }
+        else if (this.level == 2)
+        {
+            bulletInfo.splash = 0.2;
+            bulletInfo.penetration = 3;
+        }
+        else if (this.level == 3)
+        {
+            bulletInfo.splash = 0.2;
+            bulletInfo.penetration = 5;
+        }
+
+        atkRegister = 60;
+    }
     IEnumerator SelfHeal()
     {
         while (true)

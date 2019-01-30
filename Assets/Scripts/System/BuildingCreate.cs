@@ -128,14 +128,13 @@ public class BuildingCreate : MonoBehaviour
             tmp.GetComponent<WallScr>().xdl = xdl;
             tmp.GetComponent<WallScr>().yul = yul;
             tmp.GetComponent<WallScr>().ydl = ydl;
-            GameObject.Find("UIs").GetComponent<UIManager>().dragging = false;
 
             Building.BuildingType targetBuildingType = Building.BuildingType.NONE;
             if (num == 2) targetBuildingType = Building.BuildingType.WIDTHWALL;
-            else if (num == 3) targetBuildingType = Building.BuildingType.HEIGHTWALL;
-            else if (num == 4) targetBuildingType = Building.BuildingType.TOWER;
+            else if (num == 3) targetBuildingType = Building.BuildingType.TOWER;
+            else if (num == 4) targetBuildingType = Building.BuildingType.FARM;
             else if (num == 0) targetBuildingType = Building.BuildingType.NONE;
-            else if (num == 1) targetBuildingType = Building.BuildingType.HOME;
+            else if (num == 1) targetBuildingType = Building.BuildingType.HEIGHTWALL;
 
             buildingManager.AddBuilding(tmp, Mathf.RoundToInt(cx + 15.5f) - xdl, Mathf.RoundToInt(cy + 15.5f) - ydl, targetBuildingType);
             //buildingManager.AddBuilding(Mathf.RoundToInt(cx) - xdl, Mathf.RoundToInt(cy) - ydl, targetBuildingType, xul - xdl + 1, yul - ydl + 1);

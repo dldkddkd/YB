@@ -61,7 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Object\EnemyMove.cs" />
+    <Compile Include="Assets\Scripts\Object\BulletInfo.cs" />
     <Compile Include="Assets\Scripts\Object\Fieldupgrade.cs" />
     <Compile Include="Assets\Scripts\Object\GhostAttack.cs" />
     <Compile Include="Assets\Scripts\Object\HomeScript.cs" />
@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\System\GameExit.cs" />
     <Compile Include="Assets\Scripts\System\GameStart.cs" />
     <Compile Include="Assets\Scripts\System\MapScr.cs" />
+    <Compile Include="Assets\Scripts\System\MonsterManager.cs" />
     <Compile Include="Assets\Scripts\System\PlayerSystem.cs" />
     <Compile Include="Assets\Scripts\System\Settings.cs" />
     <Compile Include="Assets\Scripts\System\SoundManager.cs" />

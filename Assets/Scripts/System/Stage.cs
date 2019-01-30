@@ -6,6 +6,7 @@ public class Stage : MonoBehaviour {
 
     private int stage;
     private UIManager UIM;
+    private MonsterManager MM;
 
     private bool game;
     private int enemy;
@@ -19,6 +20,7 @@ public class Stage : MonoBehaviour {
     void Start () {
         stage = 1;
         UIM = GameObject.Find("UIs").GetComponent<UIManager>();
+        MM = GameObject.Find("center").GetComponent<MonsterManager>();
 
         game = false;
 
@@ -33,9 +35,11 @@ public class Stage : MonoBehaviour {
         }
         else
         {
-            if (enemy == 0)
+            if (MM.IsEmptyMonsterList() == true)
             {
                 game = false;
+                int sum = GameObject.Find("center").GetComponent<BuildingManager>().SearchFarm();
+                GameObject.Find("Player").GetComponent<PlayerSystem>().money += 200 + 10 * stage + sum;
                 stage += 1;
                 UIM.StageEnd(stage);
             }
@@ -51,24 +55,22 @@ public class Stage : MonoBehaviour {
 
     IEnumerator Stage1()
     {
+        enemy = 5;
         while (true)
         {
-            game = true;
-            enemy = 5; //적 수
-            //spawn
             for (int i = 0; i < enemy; i++)
             {
                 Create_Enemy(1, 1, 1);
+                yield return new WaitForSeconds(1.0f);
             }
-            yield return new WaitForSeconds(1.0f);
 
+            game = true;
             yield break;
         }
     }
 
     void Create_Enemy(int type, int dir1, int dir2)    //right=1, left=-1 / down=-1, up=1
     {
-        GameObject spawn = null;
         Vector3 tmp = new Vector3(0, 0, 5);
         float xrand = Random.Range(-2.0f, 2.0f);
         float yrand = Random.Range(-2.0f, 2.0f);
@@ -96,9 +98,7 @@ public class Stage : MonoBehaviour {
 
         if (type == 1)
         {
-            spawn = Enemy1;
+            MM.SetMonster(MonsterManager.MonsterType.GHOST, tmp);
         }
-
-        Instantiate(spawn, tmp, Quaternion.Euler(0, 0, 0));
     }
 }

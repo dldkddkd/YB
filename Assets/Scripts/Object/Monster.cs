@@ -6,7 +6,7 @@ public class Monster : MonoBehaviour
 {
 
     Vector2 pos;
-    int hp;
+    public int hp;
     int atk;
     int atkRange;
     float atkSpeed;
@@ -36,8 +36,13 @@ public class Monster : MonoBehaviour
         Building building;
         this.home = buildingManager.home;
         building = buildingManager.GetMostCloseBuilding(transform.position);
-        //Debug.Log("유령 여기: " + transform.position.ToString() + " home: "+home.pos.ToString()) ;
-        //Debug.Log("유령과거리: "+building.GetBetweenDistanceFloat(transform.position).ToString());
+
+        if (this.hp <= 0)
+        {
+            MonsterManager monsterManager = GameObject.Find("center").GetComponent<MonsterManager>();
+            monsterManager.DeadMonster(gameObject);
+        }
+
         if (building.GetBetweenDistanceFloat(transform.position) < atkRange)
         {
             attack();
@@ -67,11 +72,4 @@ public class Monster : MonoBehaviour
         attackRegister = 60;
     }
 
-    public Vector2 transToArrayVector2()
-    {
-        Vector3 arrow = transform.position;
-        arrow.x += 16.0f;
-        arrow.y += 16.0f;
-        return (Vector2)arrow;
-    }
 }

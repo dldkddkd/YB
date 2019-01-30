@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114259628965665312}
   - component: {fileID: 61625152875473464}
   - component: {fileID: 50669356210768328}
+  - component: {fileID: 95544662993874590}
   m_Layer: 0
   m_Name: Tower1
   m_TagString: Wall
@@ -89,6 +90,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &95544662993874590
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862314392663308}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6fadd65d97cde7543b2aef3efc318816, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114250031759472658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,6 +127,9 @@ MonoBehaviour:
   lv1spr: {fileID: 21300000, guid: a8207ff1d1ce93343a7ce8ea3604ca40, type: 3}
   lv2spr: {fileID: 21300000, guid: 3a783b7451f20cd4693f7eeb6655ecf5, type: 3}
   lv3spr: {fileID: 21300000, guid: a326e3022a82ab5439d4dd3386c49f9e, type: 3}
+  Bullet1: {fileID: 1867282892216202, guid: c63d04049c1e0ea45b85d4ba147785f9, type: 2}
+  Bullet2: {fileID: 1274258770025022, guid: fdb2c89ea96647a469b529587ce6ed3a, type: 2}
+  Bullet3: {fileID: 1879362226043976, guid: 2586dcb2d4788ba499510b3d566f03d2, type: 2}
 --- !u!114 &114259628965665312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,11 +154,9 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -150,7 +169,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

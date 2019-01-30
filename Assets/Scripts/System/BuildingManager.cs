@@ -13,6 +13,7 @@ public class Building
     };
 
     public Vector2 pos;
+    public Vector3 transPosition;
     public BuildingType type;
     public int hp;
     public int curHp;
@@ -22,17 +23,14 @@ public class Building
 
     public Vector3 GetBetweenDistanceVector3(Vector3 pos)
     {
-        Vector3 tempPos = (Vector3)this.pos;
-        tempPos.x -= 15.5f;
-        tempPos.y -= 15.5f;
-        return (tempPos - pos);
+        return this.transPosition - pos;
     }
     public float GetBetweenDistanceFloat(Vector3 pos)
     {
-        Vector3 tempPos = (Vector3)this.pos;
-        tempPos.x -= 15.5f;
-        tempPos.y -= 15.5f;
-        return (tempPos - pos).magnitude;
+        //Debug.Log(this.type + " " + ((Vector2)this.transPosition - (Vector2)pos).magnitude);
+        // z축의 거리를 없애기위해 Vector2로 변환
+        //Debug.Log(type + " " + ((Vector2)this.transPosition).ToString() + " " + ((Vector2)pos).ToString() + " " + ((Vector2)this.transPosition - (Vector2)pos).magnitude.ToString());
+        return ((Vector2)this.transPosition - (Vector2)pos).magnitude;
     }
 
 }
@@ -48,11 +46,17 @@ public class BuildingManager : MonoBehaviour
         home = AddBuilding(GameObject.Find("home").gameObject, 16, 16, Building.BuildingType.HOME);
     }
 
+    public void Update()
+    {
+        CheckBuildingHP();
+    }
+
     public Building AddBuilding(GameObject tmp, int x_, int y_, Building.BuildingType type)
     {
         Building targetBuilding = new Building();
 
         targetBuilding.desktop = tmp;
+        targetBuilding.transPosition = tmp.transform.position;
         targetBuilding.pos = new Vector2(x_, y_);
         targetBuilding.type = type;
         targetBuilding.level = 1;
@@ -175,52 +179,16 @@ public class BuildingManager : MonoBehaviour
     {
         double distance = 999;
         Building target = null;
-        Vector3 tempPos;
         foreach (Building item in buildingList)
         {
-            tempPos = (Vector3)item.pos;
-            tempPos.x -= 15.5f;
-            tempPos.y -= 15.5f;
-
-            double tempDistance = (pos - tempPos).magnitude;
-            //Debug.Log("tempDistance: " + tempDistance.ToString());
+            double tempDistance = ((Vector2)item.transPosition - (Vector2)pos).magnitude;
             if (distance > tempDistance)
             {
-                // Debug.Log("세상은 바뀐다");
                 target = item;
                 distance = tempDistance;
             }
         }
         return target;
-    }
-
-    public Building GetTheBuilding(Vector3 transVec3, Building.BuildingType type)
-    {
-        Vector3 tempPos;
-        Building target = null;
-
-        foreach (Building item in buildingList)
-        {
-            if (item.type != type) continue;
-
-            tempPos = (Vector3)item.pos;
-
-            if (type == Building.BuildingType.HOME)
-            {
-                tempPos.x -= 15.5f;
-                tempPos.y -= 15.5f;
-            }
-            double tempDistance = (transVec3 - tempPos).magnitude;
-            // Debug.Log("distance: " + tempDistance.ToString());
-            Debug.Log(type.ToString() + "  tempPos: " + tempPos.ToString());
-            if (tempDistance < 0.3f)
-            {
-                Debug.Log("세상은 바뀐다.:");
-                target = item;
-                return target;
-            }
-        }
-        return null;
     }
 
     public void RemoveElementOfListToGameObject(GameObject gameObj)
@@ -234,5 +202,50 @@ public class BuildingManager : MonoBehaviour
             }
         }
         return;
+    }
+
+    public int SearchFarm()
+    {
+        int sum = 0;
+        foreach (Building bd in buildingList)
+        {
+            if (bd.type == Building.BuildingType.FARM)
+            {
+                sum += bd.desktop.GetComponent<Fieldupgrade>().bonus;
+            }
+        }
+        return sum;
+    }
+
+    public void CheckBuildingHP()
+    {
+        foreach (Building bd in buildingList)
+        {
+            if (bd.hp <= 0)
+            {
+                if (bd.type == Building.BuildingType.WIDTHWALL)
+                {
+                    bd.desktop.GetComponent<Wallupgrade>().Delete();
+                }
+                else if (bd.type == Building.BuildingType.HEIGHTWALL)
+                {
+                    bd.desktop.GetComponent<Wallupgrade>().Delete();
+                }
+                else if (bd.type == Building.BuildingType.TOWER)
+                {
+                    bd.desktop.GetComponent<Towerupgrade>().Delete();
+                }
+                else if (bd.type == Building.BuildingType.FARM)
+                {
+                    bd.desktop.GetComponent<Fieldupgrade>().Delete();
+                }
+                else if (bd.type == Building.BuildingType.HOME)
+                {
+                    // 홈에 대해서는 그게 없다!!!! !!
+                    // 1!!! !
+                }
+                break;
+            }
+        }
     }
 }

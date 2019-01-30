@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameStart : MonoBehaviour {
-	public GameObject gameStartBtn;
-	public GameObject settingsBtn;
-	public GameObject gameExitBtn;
-	public GameObject stageStartBtn;
-	// Use this for initialization
-	void Start () {
-		GameObject.Find ("home").GetComponent<BoxCollider2D> ().enabled = false;
-		GameObject.Find ("Main Camera").GetComponent<CameraScript> ().enabled = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-	public void Activate(){
+public class GameStart : MonoBehaviour
+{
+    public GameObject gameStartBtn;
+    public GameObject settingsBtn;
+    public GameObject gameExitBtn;
+    public GameObject stageStartBtn;
+    // Use this for initialization
+    void Start()
+    {
+        GameObject.Find("home").GetComponent<BoxCollider2D>().enabled = false;
+        GameObject.Find("Main Camera").GetComponent<CameraScript>().enabled = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    public void Activate()
+    {
+        GameObject.Find("home").GetComponent<HomeScript>().GB.gameObject.SetActive(true);
+        GameObject.Find("home").GetComponent<HomeScript>().WB.gameObject.SetActive(true);
         GameObject.Find("Title").SetActive(false);
         GameObject.Find("GameStartBtn").SetActive(false);
         GameObject.Find("SettingsBtn").SetActive(false);

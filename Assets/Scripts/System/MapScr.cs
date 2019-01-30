@@ -14,7 +14,7 @@ public class MapScr : MonoBehaviour {
         {
             for (int j = 0; j < 24; j++)
             {
-                Map[i, j] = Instantiate(Tile, new Vector3(-15 + i, 12 - j, 500), Quaternion.Euler(0, 0, 0));
+                Map[i, j] = Instantiate(Tile, new Vector3(-15 + i, 12 - j, 100), Quaternion.Euler(0, 0, 0));
                 Map[i, j].transform.SetParent(GameObject.Find("tiles").transform);
                 Map[i, j].GetComponent<Tiles>().able = true;
             }

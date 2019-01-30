@@ -9,21 +9,14 @@ public class PlayerMove : MonoBehaviour {
     private float speed;
     private Vector3 dir;
 
-    public int php, atk, range, asp;
-
 	void Start () {
         u = true;
         d = true;
         l = true;
         r = true;
         wall = 0;
-        speed = 1 * 5.0f;
+        speed = 5.0f;
         dir = Vector3.zero;
-
-        php = 100;
-        atk = 10;
-        range = 1;
-        asp = 1;
 	}
 
     void Update()

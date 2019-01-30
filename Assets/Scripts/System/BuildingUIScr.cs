@@ -18,4 +18,13 @@ public class BuildingUIScr : MonoBehaviour {
     {
         uion = false;
     }
+
+    public void MouseOn()
+    {
+        uion = true;
+    }
+    public void MouseOff()
+    {
+        uion = false;
+    }
 }

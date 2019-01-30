@@ -18,5 +18,7 @@ public class HomeScript : MonoBehaviour {
     private void OnMouseDown()
     {
         GameObject.Find("UIs").GetComponent<UIManager>().BuildSelect = true;
+        GameObject.Find("UIs").GetComponent<UIManager>().Upgrading = false;
+        GameObject.Find("UIs").GetComponent<UIManager>().ability = false;
     }
 }

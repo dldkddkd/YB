@@ -7,16 +7,21 @@ public class Tiles : MonoBehaviour {
     public bool able;
 
     private GameObject UI;
-    private GameObject BUI;
+    public GameObject BUI1, BUI2, BUI3;
 
     void Start () {
         UI = GameObject.Find("UIs");
-        BUI = GameObject.Find("BuildingUI");
+        BUI1 = GameObject.Find("BuildingUI");
+        BUI2 = GameObject.Find("UpgradeUI");
+        BUI3 = GameObject.Find("AbillityUI");
 
     }
 	
-	void Update () {
-
+	void Update ()
+    {
+        //BUI1 = GameObject.Find("BuildingUI");
+        //BUI2 = GameObject.Find("UpgradeUI");
+        //BUI3 = GameObject.Find("AbillityUI");
 
         //debug
         //if (able == false)
@@ -33,11 +38,25 @@ public class Tiles : MonoBehaviour {
     {
         if (UI.GetComponent<UIManager>().dragging == false)
         {
-            if (BUI != null)
+            if (BUI1 != null)
             {
-                if (BUI.GetComponent<BuildingUIScr>().uion == false)
+                if (BUI1.GetComponent<BuildingUIScr>().uion == false)
                 {
                     UI.GetComponent<UIManager>().BuildSelect = false;
+                }
+            }
+            if (BUI2 != null)
+            {
+                if (BUI2.GetComponent<BuildingUIScr>().uion == false)
+                {
+                    UI.GetComponent<UIManager>().Upgrading = false;
+                }
+            }
+            if (BUI3 != null)
+            {
+                if (BUI3.GetComponent<BuildingUIScr>().uion == false)
+                {
+                    UI.GetComponent<UIManager>().ability = false;
                 }
             }
         }

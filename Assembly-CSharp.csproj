@@ -63,7 +63,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Object\EnemyMove.cs" />
     <Compile Include="Assets\Scripts\Object\Fieldupgrade.cs" />
+    <Compile Include="Assets\Scripts\Object\GhostAttack.cs" />
     <Compile Include="Assets\Scripts\Object\HomeScript.cs" />
+    <Compile Include="Assets\Scripts\Object\Monster.cs" />
     <Compile Include="Assets\Scripts\Object\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Object\Tiles.cs" />
     <Compile Include="Assets\Scripts\Object\Towerupgrade.cs" />
@@ -80,8 +82,8 @@
     <Compile Include="Assets\Scripts\System\MapScr.cs" />
     <Compile Include="Assets\Scripts\System\PlayerSystem.cs" />
     <Compile Include="Assets\Scripts\System\Settings.cs" />
+    <Compile Include="Assets\Scripts\System\SoundManager.cs" />
     <Compile Include="Assets\Scripts\System\Stage.cs" />
-    <Compile Include="Assets\Scripts\System\StageStart.cs" />
     <Compile Include="Assets\Scripts\System\StateManager.cs" />
     <Compile Include="Assets\Scripts\System\UIManager.cs" />
     <Reference Include="UnityEditor.StandardEvents">

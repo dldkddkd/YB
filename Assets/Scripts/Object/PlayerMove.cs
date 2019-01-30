@@ -9,7 +9,10 @@ public class PlayerMove : MonoBehaviour {
     private float speed;
     private Vector3 dir;
 
-	void Start () {
+    public int maxphp, php;
+    public int atk;
+
+    void Start () {
         u = true;
         d = true;
         l = true;
@@ -17,6 +20,9 @@ public class PlayerMove : MonoBehaviour {
         wall = 0;
         speed = 5.0f;
         dir = Vector3.zero;
+
+        StartCoroutine(SelfHeal());
+        
 	}
 
     void Update()
@@ -79,6 +85,8 @@ public class PlayerMove : MonoBehaviour {
     private void OnMouseDown()
     {
         GameObject.Find("UIs").GetComponent<UIManager>().BuildSelect = false;
+        GameObject.Find("UIs").GetComponent<UIManager>().Upgrading = false;
+        GameObject.Find("UIs").GetComponent<UIManager>().ability = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -165,6 +173,18 @@ public class PlayerMove : MonoBehaviour {
                     l = true;
                 }
             }
+        }
+    }
+
+    IEnumerator SelfHeal()
+    {
+        while (true)
+        {
+            if (php < maxphp)
+            {
+                php += 1;
+            }
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }

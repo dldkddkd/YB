@@ -10,31 +10,36 @@ public class UIManager : MonoBehaviour {
     public bool dragging;
     public bool Upgrading;
     public bool slideron;
+    public bool ability;
+    public int stage;
 
     public Image Building;
     public Image Upgrade;
+    public Image AbilityPopup;
     private GameObject uptmp;
     private int uptype, price, sel;
 
     public GameObject Sliders;
+    public GameObject StageUI;
 
     public GameObject ct;
     private GameObject ps;
 
-    void Start () {
+    void Start ()
+    {
+        Screen.SetResolution(1280, 960, false);
         ingame = false;
         BuildSelect = false;
         dragging = false;
         slideron = true;
-
-        Building.gameObject.SetActive(false);
-        Upgrade.gameObject.SetActive(false);
-        Sliders.gameObject.SetActive(false);
+        ability = false;
+        stage = 1;  //0=스테이지 넘버 출력, 1=대기, 2=게임시작 출력 3=게임중
 
         ct = GameObject.Find("Creator");
         ct.gameObject.SetActive(false);
 
         ps = GameObject.Find("Player");
+
     }
 	
 	void Update () {
@@ -43,6 +48,8 @@ public class UIManager : MonoBehaviour {
             if (BuildSelect == true)
             {
                 Building.gameObject.SetActive(true);
+                Upgrading = false;
+                ability = false;
             }
             else
             {
@@ -50,12 +57,26 @@ public class UIManager : MonoBehaviour {
             }
             if (Upgrading == true)
             {
+                BuildSelect = false;
                 Upgrade.gameObject.SetActive(true);
+                ability = false;
             }
             else
             {
                 Upgrade.gameObject.SetActive(false);
             }
+            if (ability == true)
+            {
+                BuildSelect = false;
+                Upgrading = false;
+                AbilityPopup.gameObject.SetActive(true);
+            }
+            else
+            {
+                AbilityPopup.gameObject.SetActive(false);
+            }
+
+
             if (slideron == true)
             {
                 Sliders.gameObject.SetActive(true);
@@ -64,11 +85,33 @@ public class UIManager : MonoBehaviour {
             {
                 Sliders.gameObject.SetActive(false);
             }
-
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 slideron = !slideron;
             }
+
+            if (stage == 0 || stage == 2)
+            {
+                StageUI.transform.GetChild(0).gameObject.SetActive(false);
+                StageUI.transform.GetChild(1).gameObject.SetActive(true);
+            }
+            else if (stage == 1)
+            {
+                StageUI.transform.GetChild(0).gameObject.SetActive(true);
+                StageUI.transform.GetChild(1).gameObject.SetActive(false);
+            }
+            else if (stage == 3)
+            {
+                StageUI.transform.GetChild(0).gameObject.SetActive(false);
+                StageUI.transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            Building.gameObject.SetActive(false);
+            Upgrade.gameObject.SetActive(false);
+            Sliders.gameObject.SetActive(false);
+            AbilityPopup.gameObject.SetActive(false);
         }
     }
 
@@ -77,6 +120,7 @@ public class UIManager : MonoBehaviour {
         ct.gameObject.SetActive(true);
         ct.GetComponent<BuildingCreate>().On(bnum);
         dragging = true;
+        Building.GetComponent<BuildingUIScr>().uion = false;
         BuildSelect = false;
     }
 
@@ -107,6 +151,7 @@ public class UIManager : MonoBehaviour {
         if (ps.GetComponent<PlayerSystem>().money >= price)
         {
             ps.GetComponent<PlayerSystem>().money -= price;
+            Upgrade.GetComponent<BuildingUIScr>().uion = false;
             Upgrading = false;
             if (uptype == 1)
             {
@@ -124,6 +169,7 @@ public class UIManager : MonoBehaviour {
     }
     public void SelectDelete()
     {
+        Upgrade.GetComponent<BuildingUIScr>().uion = false;
         Upgrading = false;
         if (uptype == 1)
         {
@@ -136,6 +182,40 @@ public class UIManager : MonoBehaviour {
         else if (uptype == 3)
         {
             uptmp.GetComponent<Fieldupgrade>().Delete();
+        }
+    }
+    
+    public void StageEnd(int num)
+    {
+        //stageScr->End
+        stage = 0;
+        StageUI.transform.GetChild(1).gameObject.GetComponent<Text>().text = "Stage " + num;
+        StartCoroutine(StageTxt());
+    }
+    IEnumerator StageTxt()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(3.0f);
+            stage = 1;
+            yield break;
+        }
+    }
+    public void StageStart()
+    {
+        //Button
+        stage = 2;
+        StageUI.transform.GetChild(1).gameObject.GetComponent<Text>().text = "Start!";
+        StartCoroutine(StartTxt());
+        GameObject.Find("StageManager").GetComponent<Stage>().StageStart();
+    }
+    IEnumerator StartTxt()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(3.0f);
+            stage = 3;
+            yield break;
         }
     }
 }

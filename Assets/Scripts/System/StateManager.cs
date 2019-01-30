@@ -25,7 +25,8 @@ public class StateManager : MonoBehaviour {
             HPSlider.value = 0;
         }
         PowderSlider.value = ps.GetComponent<PlayerSystem>().money;
-        HPText.text = HPSlider.value + " / 100";
+        HPSlider.maxValue = ps.GetComponent<PlayerSystem>().maxphp;
+        HPText.text = HPSlider.value + " / " + HPSlider.maxValue;
         PowderText.text = PowderSlider.value + " / 2000";
     }
 }

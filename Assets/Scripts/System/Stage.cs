@@ -17,12 +17,13 @@ public class Stage : MonoBehaviour {
     private GameObject Enemy5;
 
     void Start () {
-        stage = 0;
+        stage = 1;
         UIM = GameObject.Find("UIs").GetComponent<UIManager>();
 
         game = false;
 
-        //Enemy1 = Resources.Load("Enemy1") as GameObject;
+        UIM.StageEnd(stage);
+        Enemy1 = Resources.Load("Enemy1") as GameObject;
 
     }
 	
@@ -36,24 +37,68 @@ public class Stage : MonoBehaviour {
             {
                 game = false;
                 stage += 1;
+                UIM.StageEnd(stage);
             }
         }
 	}
+    public void StageStart()
+    {
+        if (stage == 1)
+        {
+            StartCoroutine(Stage1());
+        }
+    }
 
     IEnumerator Stage1()
     {
         while (true)
         {
             game = true;
-            enemy = 10; //적 수
+            enemy = 5; //적 수
             //spawn
+            for (int i = 0; i < enemy; i++)
+            {
+                Create_Enemy(1, 1, 1);
+            }
             yield return new WaitForSeconds(1.0f);
 
             yield break;
         }
     }
 
-    void Create_Enemy(int type, int locate)
+    void Create_Enemy(int type, int dir1, int dir2)    //right=1, left=-1 / down=-1, up=1
     {
+        GameObject spawn = null;
+        Vector3 tmp = new Vector3(0, 0, 5);
+        float xrand = Random.Range(-2.0f, 2.0f);
+        float yrand = Random.Range(-2.0f, 2.0f);
+
+        if (dir1 == 1)
+        {
+            tmp.x += 18;
+        }
+        else if (dir1 == -1)
+        {
+            tmp.x -= 18;
+        }
+        if (dir2 == 1)
+        {
+            tmp.y += 12;
+            tmp.z += 12;
+        }
+        else if (dir2 == -1)
+        {
+            tmp.y -= 12;
+            tmp.z -= 12;
+        }
+        tmp.x += xrand;
+        tmp.y += yrand;
+
+        if (type == 1)
+        {
+            spawn = Enemy1;
+        }
+
+        Instantiate(spawn, tmp, Quaternion.Euler(0, 0, 0));
     }
 }

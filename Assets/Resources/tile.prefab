@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   able: 0
+  BUI: {fileID: 0}
 --- !u!212 &212897747782030208
 SpriteRenderer:
   m_ObjectHideFlags: 1

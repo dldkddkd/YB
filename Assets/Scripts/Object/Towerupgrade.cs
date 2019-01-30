@@ -64,6 +64,9 @@ public class Towerupgrade : MonoBehaviour {
             }
         }
         GameObject.Find("Player").GetComponent<PlayerSystem>().money += selcost;
+        BuildingManager buildingManager;
+        buildingManager = GameObject.Find("center").GetComponent<BuildingManager>();
+        buildingManager.RemoveElementOfListToGameObject(gameObject);
         Destroy(gameObject);
     }
 

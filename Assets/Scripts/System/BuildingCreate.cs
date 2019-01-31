@@ -102,7 +102,7 @@ public class BuildingCreate : MonoBehaviour
             xdl = 0;
             yul = 0;
             ydl = -1;
-            sz = 100;
+            sz = 4;
             price = 150;
         }
         if (ps.money < price)
@@ -136,7 +136,9 @@ public class BuildingCreate : MonoBehaviour
             else if (num == 0) targetBuildingType = Building.BuildingType.NONE;
             else if (num == 1) targetBuildingType = Building.BuildingType.HEIGHTWALL;
 
+            
             buildingManager.AddBuilding(tmp, Mathf.RoundToInt(cx + 15.5f) - xdl, Mathf.RoundToInt(cy + 15.5f) - ydl, targetBuildingType);
+            Debug.Log(cx + " " + cy);
             //buildingManager.AddBuilding(Mathf.RoundToInt(cx) - xdl, Mathf.RoundToInt(cy) - ydl, targetBuildingType, xul - xdl + 1, yul - ydl + 1);
             Off();
         }

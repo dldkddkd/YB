@@ -19,10 +19,10 @@ public class FadeManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            flag = true;
-        }
+        //if (Input.GetKey(KeyCode.Space))
+        //{
+        //    flag = true;
+        //}
         if (flag) {
 			if(time <= timeLimit)
 				time += Time.deltaTime;

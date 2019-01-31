@@ -15,6 +15,7 @@ public class Towerupgrade : MonoBehaviour {
     public Sprite lv1spr, lv2spr, lv3spr;
 
     private UIManager UIM;
+    private GameObject BUI2;
     private Animator animator;
     private MonsterManager mobManager;
 
@@ -36,12 +37,13 @@ public class Towerupgrade : MonoBehaviour {
         click = false;
         upcost = 180;
         selcost = 40;
-        atkRange = 3;
+        atkRange = 4;
         atkSpeed = 1;
-        bulletSpeed = 1;
+        bulletSpeed = 2;
         GetComponent<SpriteRenderer>().sprite = lv1spr;
 
         UIM = GameObject.Find("UIs").GetComponent<UIManager>();
+        BUI2 = UIM.Upgrade.gameObject;
         animator = transform.GetComponent<Animator>();
         mobManager = GameObject.Find("center").GetComponent<MonsterManager>();
     }
@@ -70,8 +72,9 @@ public class Towerupgrade : MonoBehaviour {
                 thp = 1300;
                 maxthp = 1300;
                 atk += 20;
-                bulletSpeed = 1.1f;
-                animator.SetTrigger("levUpTo2");
+                bulletSpeed = 3.5f;
+                atkRange += 2;
+                animator.SetInteger("level", 1);
             }
             else if (level == 3)
             {
@@ -79,8 +82,9 @@ public class Towerupgrade : MonoBehaviour {
                 thp = 1500;
                 maxthp = 1500;
                 atk += 20;
-                bulletSpeed = 1.3f;
-                animator.SetTrigger("levUpTo3");
+                bulletSpeed = 7.0f;
+                atkRange += 2;
+                animator.SetInteger("level", 2);
             }
         }
     }
@@ -104,12 +108,15 @@ public class Towerupgrade : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        if (click == false)
+        if (click == false && BUI2.GetComponent<BuildingUIScr>().uion == false)
         {
             click = true;
-            UIM.UpgradeUI(gameObject, 2, upcost, selcost, thp, 200, atk, 20);
+            UIM.UpgradeUI(gameObject, 2, level, upcost, selcost, thp, 200, atk, 20);
         }
-        else
+    }
+    private void OnMouseUp()
+    {
+        if (click == true)
         {
             click = false;
         }
@@ -117,6 +124,8 @@ public class Towerupgrade : MonoBehaviour {
 
     public void attack(Vector3 aim)
     {
+        animator.SetBool("cool", true);
+        StartCoroutine(Cool());
         if (atkRegister > 0) return;
 
         GameObject bulletObj = null;
@@ -126,8 +135,16 @@ public class Towerupgrade : MonoBehaviour {
 
         BulletInfo bulletInfo = null;
         bulletInfo = bulletObj.GetComponent<BulletInfo>();
-
+        
         bulletInfo.arrow = (Vector3)((Vector2)aim - (Vector2)this.transform.position).normalized;
+        float theta = Mathf.Sign(bulletInfo.arrow.y) * Mathf.Acos(Mathf.Abs(bulletInfo.arrow.x) / Mathf.Sqrt(bulletInfo.arrow.x * bulletInfo.arrow.x + bulletInfo.arrow.y * bulletInfo.arrow.y)) * Mathf.Rad2Deg;
+        if (bulletInfo.arrow.x < 0)
+        {
+            theta = 180 - theta;
+        }
+        transform.localRotation = Quaternion.Euler(0, 0, 0);
+        transform.Rotate(new Vector3(0, 0, theta + 90));
+
         bulletInfo.ad = this.atk;
         bulletInfo.range = this.atkRange;
         bulletInfo.speed = this.bulletSpeed;
@@ -150,17 +167,25 @@ public class Towerupgrade : MonoBehaviour {
 
         atkRegister = 60;
     }
+    IEnumerator Cool()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.4f);
+            animator.SetBool("cool", false);
+            yield break;
+        }
+    }
     IEnumerator SelfHeal()
     {
         while (true)
         {
-            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == false)
+            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == true)
             {
-                yield break;
-            }
-            if (thp < maxthp)
-            {
-                thp += 1;
+                if (thp < maxthp)
+                {
+                    thp += 1;
+                }
             }
             yield return new WaitForSeconds(1.0f);
         }

@@ -12,6 +12,7 @@ public class Wallupgrade : MonoBehaviour {
     public Sprite lv1spr, lv2spr, lv3spr;
 
     private UIManager UIM;
+    private GameObject BUI2;
 
     void Start ()
     {
@@ -29,6 +30,7 @@ public class Wallupgrade : MonoBehaviour {
         GetComponent<SpriteRenderer>().sprite = lv1spr;
 
         UIM = GameObject.Find("UIs").GetComponent<UIManager>();
+        BUI2 = UIM.Upgrade.gameObject;
     }
 	
 	void Update () {
@@ -71,12 +73,15 @@ public class Wallupgrade : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        if (click == false)
+        if (click == false && BUI2.GetComponent<BuildingUIScr>().uion == false)
         {
             click = true;
-            UIM.UpgradeUI(gameObject, 1, upcost, selcost, whp, 500, 0, 0);
+            UIM.UpgradeUI(gameObject, 1, level, upcost, selcost, whp, 500, 0, 0);
         }
-        else
+    }
+    private void OnMouseUp()
+    {
+        if (click == true)
         {
             click = false;
         }
@@ -86,13 +91,12 @@ public class Wallupgrade : MonoBehaviour {
     {
         while (true)
         {
-            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == false)
+            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == true)
             {
-                yield break;
-            }
-            if (whp < maxwhp)
-            {
-                whp += 1;
+                if (whp < maxwhp)
+                {
+                    whp += 1;
+                }
             }
             yield return new WaitForSeconds(1.0f);
         }

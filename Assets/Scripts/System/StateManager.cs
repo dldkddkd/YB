@@ -17,13 +17,13 @@ public class StateManager : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (ps.transform.GetChild(0) != null)
+        if (ps.transform.GetChild(0).gameObject == null)
         {
-            HPSlider.value = ps.transform.GetChild(0).GetComponent<PlayerMove>().php;
+            HPSlider.value = 0;
         }
         else
         {
-            HPSlider.value = 0;
+            HPSlider.value = ps.transform.GetChild(0).GetComponent<PlayerMove>().php;
         }
         PowderSlider.value = ps.GetComponent<PlayerSystem>().money;
         HPSlider.maxValue = ps.GetComponent<PlayerSystem>().maxphp;

@@ -80,6 +80,12 @@ public class PlayerMove : MonoBehaviour {
             l = true;
             r = true;
         }
+
+        if (php <= 0)
+        {
+            transform.parent.GetComponent<PlayerSystem>().DeathEvent();
+            Destroy(gameObject);
+        }
 	}
     
     private void OnMouseDown()
@@ -186,5 +192,11 @@ public class PlayerMove : MonoBehaviour {
             }
             yield return new WaitForSeconds(1.0f);
         }
+    }
+
+    public void BeAttack(int ad)
+    {
+        if (transform.parent.GetComponent<PlayerSystem>().ab2 != true) 
+        php -= ad;
     }
 }

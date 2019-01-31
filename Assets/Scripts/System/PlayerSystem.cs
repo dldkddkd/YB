@@ -27,6 +27,11 @@ public class PlayerSystem : MonoBehaviour {
     {
     }
 
+    public void DeathEvent()
+    {
+        StartCoroutine(Death());
+    }
+
     IEnumerator Death()
     {
         while (true)
@@ -37,6 +42,7 @@ public class PlayerSystem : MonoBehaviour {
             scv.GetComponent<PlayerMove>().maxphp = maxphp;
             scv.GetComponent<PlayerMove>().php = maxphp;
             scv.GetComponent<PlayerMove>().atk = atk;
+            yield break;
         }
     }
 

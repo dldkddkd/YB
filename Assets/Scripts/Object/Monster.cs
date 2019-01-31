@@ -10,22 +10,59 @@ public class Monster : MonoBehaviour
     int atk;
     int atkRange;
     float atkSpeed;
-    int moveSpeed;
+    float moveSpeed;
+    int pay;
+    public MonsterManager.MonsterType type;
 
     float attackRegister;
 
     BuildingManager buildingManager;
     Building home;
     public GameObject atkPrefab;
+    public GameObject player;
 
-    public void Awake()
+    public void Start()
     {
-        //pos = Vector2.zero;
-        hp = 1;
-        atk = 1;
-        atkRange = 2;
-        atkSpeed = 1;
-        moveSpeed = 1;
+        attackRegister = 0;
+        player = GameObject.Find("Player").transform.GetChild(0).gameObject;
+        if (type == MonsterManager.MonsterType.SKUL)
+        {
+            hp = 60;
+            atk = 30;
+            atkRange = 1;
+            atkSpeed = 1.5f;
+            moveSpeed = 2;
+            pay = 10;
+
+        }
+        else if (type == MonsterManager.MonsterType.GHOST)
+        {
+            hp = 45;
+            atk = 20;
+            atkRange = 3;
+            atkSpeed = 1;
+            moveSpeed = 1.5f;
+            pay = 15;
+        }
+        else if (type == MonsterManager.MonsterType.WITCH)
+        {
+            hp = 500;
+            atk = 100;
+            atkRange = 6;
+            atkSpeed = 0.2f;
+            moveSpeed = 1.5f;
+            pay = 100;
+        }
+        else if (type == MonsterManager.MonsterType.BOMB)
+        {
+            hp = 20;
+            atk = 1000;
+            atkRange = 1;
+            atkSpeed = 1;
+            moveSpeed = 0.75f;
+            pay = 20;
+        }
+
 
         buildingManager = GameObject.Find("center").GetComponent<BuildingManager>();
 
@@ -33,9 +70,6 @@ public class Monster : MonoBehaviour
 
     public void Update()
     {
-        Building building;
-        this.home = buildingManager.home;
-        building = buildingManager.GetMostCloseBuilding(transform.position);
 
         if (this.hp <= 0)
         {
@@ -43,7 +77,16 @@ public class Monster : MonoBehaviour
             monsterManager.DeadMonster(gameObject);
         }
 
-        if (building.GetBetweenDistanceFloat(transform.position) < atkRange)
+        Building building;
+        this.home = buildingManager.home;
+        building = buildingManager.GetMostCloseBuilding(transform.position);
+
+        float pDistance = 0;
+        if (player != null){
+            pDistance = ((Vector2)player.transform.position - (Vector2)this.transform.position).magnitude;
+        }
+
+        if (building.GetBetweenDistanceFloat(transform.position) < atkRange || (player != null  &&pDistance < atkRange))
         {
             attack();
         }
@@ -65,11 +108,59 @@ public class Monster : MonoBehaviour
 
     public virtual void attack()
     {
+        if (type == MonsterManager.MonsterType.BOMB && 1 <= attackRegister && attackRegister <= 10)
+        {
+            GameObject bullet = null;
+            bullet = Instantiate(atkPrefab, this.transform.position, Quaternion.identity);
+
+            GhostAttack attackInfo = bullet.GetComponent<GhostAttack>();
+            attackInfo.ad = atk;
+            attackInfo.attackRange = 1;
+
+            GameObject.Find("center").GetComponent<MonsterManager>().DeadMonster(gameObject);
+        }
+
         if (attackRegister > 0) return;
 
-        Instantiate(atkPrefab, this.transform.position, Quaternion.identity);
+        if (type == MonsterManager.MonsterType.BOMB)
+        {
+            Animator animator = GetComponent<Animator>();
+            animator.SetTrigger("explsion");
+        }
+        else
+        {
+            GameObject bullet = null;
+            bullet = Instantiate(atkPrefab, this.transform.position, Quaternion.identity);
+
+            if (type == MonsterManager.MonsterType.SKUL)
+            {
+                GhostAttack attackInfo = bullet.GetComponent<GhostAttack>();
+                attackInfo.ad = atk;
+                attackInfo.attackRange = atkRange;
+                attackInfo.speed = 1;
+            }
+            else if (type == MonsterManager.MonsterType.GHOST)
+            {
+                GhostAttack attackInfo = bullet.GetComponent<GhostAttack>();
+                attackInfo.ad = atk * 2;
+                attackInfo.attackRange = atkRange;
+                attackInfo.speed = 2;
+            }
+            else if (type == MonsterManager.MonsterType.WITCH)
+            {
+                GhostAttack attackInfo = bullet.GetComponent<GhostAttack>();
+                attackInfo.ad = atk * 2;
+                attackInfo.attackRange = atkRange;
+                attackInfo.speed = 3;
+            }
+        }
+
 
         attackRegister = 60;
     }
 
+    public int getPay()
+    {
+        return pay;
+    }
 }

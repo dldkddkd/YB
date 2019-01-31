@@ -15,7 +15,6 @@ public class Stage : MonoBehaviour {
     private GameObject Enemy2;
     private GameObject Enemy3;
     private GameObject Enemy4;
-    private GameObject Enemy5;
 
     void Start () {
         stage = 1;
@@ -26,6 +25,9 @@ public class Stage : MonoBehaviour {
 
         UIM.StageEnd(stage);
         Enemy1 = Resources.Load("Enemy1") as GameObject;
+        Enemy2 = Resources.Load("Enemy2") as GameObject;
+        Enemy3 = Resources.Load("Enemy3") as GameObject;
+        Enemy4 = Resources.Load("Enemy4") as GameObject;
 
     }
 	
@@ -51,16 +53,283 @@ public class Stage : MonoBehaviour {
         {
             StartCoroutine(Stage1());
         }
+        else if (stage == 2)
+        {
+            StartCoroutine(Stage2());
+        }
+        else if (stage == 3)
+        {
+            StartCoroutine(Stage3());
+        }
+        else if (stage == 4)
+        {
+            StartCoroutine(Stage4());
+        }
+        else if (stage == 5)
+        {
+            StartCoroutine(Stage5());
+        }
+        else if (stage == 6)
+        {
+            StartCoroutine(Stage6());
+        }
+        else if (stage == 7)
+        {
+            StartCoroutine(Stage7());
+        }
+        else if (stage == 8)
+        {
+            StartCoroutine(Stage8());
+        }
+        else if (stage == 9)
+        {
+            StartCoroutine(Stage9());
+        }
+        else if (stage >= 10)
+        {
+            StartCoroutine(Stage10());
+        }
     }
 
     IEnumerator Stage1()
+    {
+        enemy = 1;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                Create_Enemy(1, 1, 1);
+                Create_Enemy(1, 1, 0);
+                Create_Enemy(1, 1, -1);
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage2()
+    {
+        enemy = 2;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                Create_Enemy(1, 0, 1);
+                Create_Enemy(1, 1, 0);
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage3()
+    {
+        enemy = 3;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                Create_Enemy(1, -1, 0);
+                Create_Enemy(1, 1, 0);
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage4()
     {
         enemy = 5;
         while (true)
         {
             for (int i = 0; i < enemy; i++)
             {
-                Create_Enemy(1, 1, 1);
+                Create_Enemy(1, 0, 1);
+                Create_Enemy(1, 0, -1);
+                if (i > 3)
+                {
+                    Create_Enemy(2, -1, 0);
+                    Create_Enemy(2, -1, 0);
+                }
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage5()
+    {
+        enemy = 5;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                Create_Enemy(2, -1, 1);
+                Create_Enemy(2, -1, 0);
+                Create_Enemy(2, -1, -1);
+                if (i > 3)
+                {
+                    Create_Enemy(1, 0, 1);
+                    Create_Enemy(1, 0, -1);
+                }
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage6()
+    {
+        enemy = 5;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                Create_Enemy(2, 1, 1);
+                Create_Enemy(2, 1, 0);
+                Create_Enemy(2, 1, 0);
+                Create_Enemy(2, 1, -1);
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage7()
+    {
+        enemy = 5;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                Create_Enemy(2, 1, 1);
+                Create_Enemy(2, 1, -1);
+                Create_Enemy(2, -1, 1);
+                Create_Enemy(2, -1, -1);
+                Create_Enemy(1, 1, 0);
+                Create_Enemy(1, 0, 1);
+                Create_Enemy(1, -1, 0);
+                Create_Enemy(1, 0, -1);
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage8()
+    {
+        enemy = 8;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Create_Enemy(2, 1, 0);
+                    Create_Enemy(1, -1, 0);
+                }
+                else
+                {
+                    Create_Enemy(1, 1, 1);
+                    Create_Enemy(1, -1, -1);
+                }
+                if (i == 6)
+                {
+                    Create_Enemy(3, 0, 1);
+                    Create_Enemy(3, 0, -1);
+                }
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage9()
+    {
+        enemy = 8;
+        while (true)
+        {
+            for (int i = 0; i < enemy; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Create_Enemy(2, 1, -1);
+                    Create_Enemy(1, -1, -1);
+                }
+                else
+                {
+                    Create_Enemy(2, -1, 1);
+                    Create_Enemy(1, 1, 1);
+                }
+
+                if (i == 2)
+                {
+                    Create_Enemy(3, 1, 0);
+                    Create_Enemy(3, -1, 0);
+                }
+                else if (i == 5)
+                {
+                    Create_Enemy(3, -1, 1);
+                    Create_Enemy(3, 0, 1);
+                    Create_Enemy(3, 1, 1);
+                }
+                else if (i == 8)
+                {
+                    Create_Enemy(4, 1, 1);
+                }
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            game = true;
+            yield break;
+        }
+    }
+    IEnumerator Stage10()
+    {
+        enemy = 15;
+        while (true)
+        {
+            Create_Enemy(4, 1, 0);
+            Create_Enemy(4, -1, 0);
+            for (int i = 0; i < enemy; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Create_Enemy(2, -1, 0);
+                    Create_Enemy(1, -1, -1);
+                    Create_Enemy(1, -1, 1);
+                    Create_Enemy(2, -1, 0);
+                    Create_Enemy(1, -1, -1);
+                    Create_Enemy(1, -1, 1);
+                }
+                else
+                {
+                    Create_Enemy(2, 1, 0);
+                    Create_Enemy(1, 1, -1);
+                    Create_Enemy(1, 1, 1);
+                    Create_Enemy(2, 1, 0);
+                    Create_Enemy(1, 1, -1);
+                    Create_Enemy(1, 1, 1);
+                }
+
+                if (i == 5)
+                {
+                    Create_Enemy(3, 0, 1);
+                    Create_Enemy(3, 0, -1);
+                }
+                else if (i == 10)
+                {
+                    Create_Enemy(3, 1, 0);
+                    Create_Enemy(3, -1, 0);
+                }
                 yield return new WaitForSeconds(1.0f);
             }
 
@@ -99,6 +368,18 @@ public class Stage : MonoBehaviour {
         if (type == 1)
         {
             MM.SetMonster(MonsterManager.MonsterType.GHOST, tmp);
+        }
+        if (type == 2)
+        {
+            MM.SetMonster(MonsterManager.MonsterType.SKUL, tmp);
+        }
+        if (type == 3)
+        {
+            MM.SetMonster(MonsterManager.MonsterType.BOMB, tmp);
+        }
+        if (type == 4)
+        {
+            MM.SetMonster(MonsterManager.MonsterType.WITCH, tmp);
         }
     }
 }

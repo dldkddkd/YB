@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Fieldupgrade : MonoBehaviour {
-
     public int xul, xdl, yul, ydl;
     private int level;
     public int fhp, maxfhp, bonus;
-    private bool click;
+    public bool click;
     private int upcost, selcost;
     public Sprite lv1spr, lv2spr, lv3spr;
 
     private UIManager UIM;
+    private GameObject BUI2;
 
     void Start()
     {
@@ -30,6 +30,7 @@ public class Fieldupgrade : MonoBehaviour {
         GetComponent<SpriteRenderer>().sprite = lv1spr;
 
         UIM = GameObject.Find("UIs").GetComponent<UIManager>();
+        BUI2 = UIM.Upgrade.gameObject;
     }
 
     void Update()
@@ -76,12 +77,15 @@ public class Fieldupgrade : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        if (click == false)
+        if (click == false && BUI2.GetComponent<BuildingUIScr>().uion == false)
         {
             click = true;
-            UIM.UpgradeUI(gameObject, 3, upcost, selcost, fhp, 100, bonus, 200);
+            UIM.UpgradeUI(gameObject, 3, level, upcost, selcost, fhp, 100, bonus, 200);
         }
-        else
+    }
+    private void OnMouseUp()
+    {
+        if (click == true)
         {
             click = false;
         }
@@ -91,13 +95,12 @@ public class Fieldupgrade : MonoBehaviour {
     {
         while (true)
         {
-            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == false)
+            if (GameObject.Find("Player").GetComponent<PlayerSystem>().ab1 == true)
             {
-                yield break;
-            }
-            if (fhp < maxfhp)
-            {
-                fhp += 1;
+                if (fhp < maxfhp)
+                {
+                    fhp += 1;
+                }
             }
             yield return new WaitForSeconds(1.0f);
         }

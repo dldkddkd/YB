@@ -8,11 +8,11 @@ public class MonsterManager : MonoBehaviour {
 
     public GameObject SkulPrefab;
     public GameObject GhostPrefab;
-    public GameObject WhichPrefab;
+    public GameObject WhichPrefab;//which->witch
     public GameObject BombPrefab;
 
     public enum MonsterType {
-        SKUL, GHOST, WICHI, BOMB
+        SKUL, GHOST, WITCH, BOMB
     };
 
     public void Start()
@@ -35,7 +35,7 @@ public class MonsterManager : MonoBehaviour {
         {
             targetMonster = Instantiate(GhostPrefab, spawnPos, Quaternion.identity);
         }
-        else if (type == MonsterType.WICHI)
+        else if (type == MonsterType.WITCH)
         {
             targetMonster = Instantiate(WhichPrefab, spawnPos, Quaternion.identity);
         }
@@ -44,13 +44,14 @@ public class MonsterManager : MonoBehaviour {
             targetMonster = Instantiate(BombPrefab, spawnPos, Quaternion.identity);
         }
 
+        targetMonster.GetComponent<Monster>().type = type;
         monsterList.Add(targetMonster);
     }
 
     public void DeadMonster(GameObject gameObj)
     {
+        GameObject.Find("Player").GetComponent<PlayerSystem>().money += gameObj.GetComponent<Monster>().getPay();
         monsterList.RemoveAt(monsterList.IndexOf(gameObj));
-
         Destroy(gameObj, 0.0f);
     }
 

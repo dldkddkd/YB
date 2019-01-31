@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class UIManager : MonoBehaviour {
     public bool slideron;
     public bool ability;
     public bool ab1, ab2;
+    public bool gameover;
     public int stage;
 
     public Image Building;
@@ -22,10 +24,11 @@ public class UIManager : MonoBehaviour {
 
     public GameObject Sliders;
     public GameObject StageUI;
+    public GameObject GOUI;
 
     public GameObject ct;
     private GameObject ps;
-
+    
     void Start ()
     {
         Screen.SetResolution(1280, 960, false);
@@ -36,6 +39,7 @@ public class UIManager : MonoBehaviour {
         ability = false;
         ab1 = false;
         ab2 = false;
+        gameover = false;
         stage = 1;  //0=스테이지 넘버 출력, 1=대기, 2=게임시작 출력 3=게임중
 
         ct = GameObject.Find("Creator");
@@ -125,6 +129,7 @@ public class UIManager : MonoBehaviour {
             {
                 Ab2passive.gameObject.SetActive(false);
             }
+
         }
         else
         {
@@ -133,37 +138,76 @@ public class UIManager : MonoBehaviour {
             Sliders.gameObject.SetActive(false);
             AbilityPopup.gameObject.SetActive(false);
         }
+
+        if (gameover == true)
+        {
+            GOUI.gameObject.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        {
+            GOUI.gameObject.SetActive(false);
+            Time.timeScale = 1;
+        }
     }
 
     public void BSelect(int bnum)
     {
-        ct.gameObject.SetActive(true);
-        ct.GetComponent<BuildingCreate>().On(bnum);
-        dragging = true;
-        Building.GetComponent<BuildingUIScr>().uion = false;
-        BuildSelect = false;
+        if (ps.transform.GetChild(0) != null)
+        {
+            ct.gameObject.SetActive(true);
+            ct.GetComponent<BuildingCreate>().On(bnum);
+            dragging = true;
+            Building.GetComponent<BuildingUIScr>().uion = false;
+            BuildSelect = false;
+        }
     }
 
-    public void UpgradeUI(GameObject obj, int type, int cost1, int cost2, int hpspec, int hpup, int otherspec, int otherup)
+    public void UpgradeUI(GameObject obj, int type, int level, int cost1, int cost2, int hpspec, int hpup, int otherspec, int otherup)
     {
         uptmp = obj;
         uptype = type;
         price = cost1;
         sel = cost2;
         Upgrading = true;
-        Upgrade.transform.GetChild(2).GetComponent<Text>().text = "Cost: " + cost1.ToString() + "p";
-        Upgrade.transform.GetChild(3).GetComponent<Text>().text = "Cost: " + cost2.ToString() + "p";
-        if (type == 1)
+        BuildSelect = false;
+        ability = false;
+        if (level < 3)
         {
-            Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "(+" + hpup.ToString() + ")";
+            Upgrade.transform.GetChild(0).gameObject.SetActive(true);
+            Upgrade.transform.GetChild(2).gameObject.SetActive(true);
+            Upgrade.transform.GetChild(2).GetComponent<Text>().text = "Cost: " + cost1.ToString() + "p";
+            Upgrade.transform.GetChild(3).GetComponent<Text>().text = "Cost: " + cost2.ToString() + "p";
+            if (type == 1)
+            {
+                Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "(+" + hpup.ToString() + ")";
+            }
+            else if (type == 2)
+            {
+                Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "(+" + hpup.ToString() + ")\nAD: " + otherspec.ToString() + "(+" + otherup.ToString() + ")";
+            }
+            else if (type == 3)
+            {
+                Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "(+" + hpup.ToString() + ")\nBonus: " + otherspec.ToString() + "(+" + otherup.ToString() + ")";
+            }
         }
-        else if (type == 2)
+        else
         {
-            Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "(+" + hpup.ToString() + ")\nAD: " + otherspec.ToString() + "(+" + otherup.ToString() + ")";
-        }
-        else if (type == 3)
-        {
-            Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "(+" + hpup.ToString() + ")\nBonus: " + otherspec.ToString() + "(+" + otherup.ToString() + ")";
+            Upgrade.transform.GetChild(0).gameObject.SetActive(false);
+            Upgrade.transform.GetChild(2).gameObject.SetActive(false);
+            Upgrade.transform.GetChild(3).GetComponent<Text>().text = "Cost: " + cost2.ToString() + "p";
+            if (type == 1)
+            {
+                Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString();
+            }
+            else if (type == 2)
+            {
+                Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "\nAD: " + otherspec.ToString();
+            }
+            else if (type == 3)
+            {
+                Upgrade.transform.GetChild(4).GetComponent<Text>().text = "HP: " + hpspec.ToString() + "\nBonus: " + otherspec.ToString();
+            }
         }
     }
     public void SelectUpgrade()
@@ -241,5 +285,11 @@ public class UIManager : MonoBehaviour {
             stage = 3;
             yield break;
         }
+    }
+
+    public void GameOverBtn()
+    {
+        gameover = false;
+        SceneManager.LoadScene("MainScene");
     }
 }

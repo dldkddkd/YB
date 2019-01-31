@@ -99,7 +99,7 @@ Animator:
   m_GameObject: {fileID: 1862314392663308}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6fadd65d97cde7543b2aef3efc318816, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3ef78624ecf6c074eaa6dcee2e2173c4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -107,6 +107,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114250031759472658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,6 +124,7 @@ MonoBehaviour:
   yul: 0
   ydl: 0
   thp: 0
+  maxthp: 0
   atk: 0
   lv1spr: {fileID: 21300000, guid: a8207ff1d1ce93343a7ce8ea3604ca40, type: 3}
   lv2spr: {fileID: 21300000, guid: 3a783b7451f20cd4693f7eeb6655ecf5, type: 3}
@@ -154,9 +156,11 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -169,6 +173,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

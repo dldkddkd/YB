@@ -18,6 +18,12 @@ public class BulletInfo : MonoBehaviour {
     {
         mobManager = GameObject.Find("center").GetComponent<MonsterManager>();
         startPoint = transform.position;
+        float theta = Mathf.Sign(arrow.y) * Mathf.Acos(Mathf.Abs(arrow.x) / Mathf.Sqrt(arrow.x * arrow.x + arrow.y * arrow.y)) * Mathf.Rad2Deg;
+        if (arrow.x < 0)
+        {
+            theta = 180 - theta;
+        }
+        transform.Rotate(new Vector3(0, 0, theta));
     }
     private void Update()
     {
